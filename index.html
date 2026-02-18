@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramadan Kareem London 2026 | Developed by Mubarak Jimoh</title>
-<meta name="description" content="Accurate Ramadan prayer times, jamaah schedules, full calendar, duas, Quran verses, Hadith, and premium animations for London mosques. Developed by Mubarak Jimoh">
+<title>Ramadan 2026 London | Developed by Mubarak Jimoh</title>
+<meta name="description" content="Dynamic Ramadan 2026 website with accurate London mosque prayer times, Hijri date, countdown to Iftar/Suhoor, Duas, Quran verses, Hadith, and premium animations. Developed by Mubarak Jimoh.">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -12,7 +12,7 @@ body{font-family:'Poppins',sans-serif;background:#0a0a0a;color:white;text-align:
 header{padding:80px 20px;position:relative;overflow:hidden;}
 h1{font-family:'Cinzel',serif;font-size:3rem;color:#d4af37;letter-spacing:2px;animation:fadeInDown 2s;}
 .subtitle{color:#ccc;margin-top:10px;animation:fadeInDown 2s 0.5s;opacity:0;animation-fill-mode:forwards;}
-#hijri{margin-top:10px;color:#f4d03f;font-weight:bold;animation:fadeInDown 2s 1s;opacity:0;animation-fill-mode:forwards;}
+#date{margin-top:10px;color:#f4d03f;font-weight:bold;animation:fadeInDown 2s 1s;opacity:0;animation-fill-mode:forwards;}
 @keyframes fadeInDown{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
 .moon{position:absolute;top:50px;right:10%;width:120px;height:120px;background:#f4d03f;border-radius:50%;box-shadow:0 0 50px #f4d03f;animation:float 6s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
@@ -23,9 +23,10 @@ h1{font-family:'Cinzel',serif;font-size:3rem;color:#d4af37;letter-spacing:2px;an
 .card.visible{opacity:1;transform:translateY(0);transition:all 1s;}
 h2{color:#d4af37;margin-bottom:15px;}
 .prayer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;}
-.prayer{background:rgba(255,255,255,0.07);padding:15px;border-radius:15px;animation:fadeIn 1s;}
+.prayer{background:rgba(255,255,255,0.07);padding:15px;border-radius:15px;animation:fadeIn 1s;position:relative;}
+.prayer.next::after{content:"Next";position:absolute;top:5px;right:10px;background:#f4d03f;color:#0a0a0a;padding:2px 8px;border-radius:5px;font-size:0.8rem;font-weight:bold;}
 @keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
-.countdown{font-size:2rem;color:#f4d03f;}
+.countdown{font-size:2rem;color:#f4d03f;margin-top:10px;}
 button{padding:10px 20px;border:none;border-radius:10px;background:#d4af37;font-weight:bold;cursor:pointer;margin-top:10px;}
 footer{margin-top:40px;padding:20px;color:#aaa;font-size:0.9rem;}
 table{width:100%;border-collapse:collapse;margin-top:20px;}
@@ -55,7 +56,7 @@ document.body.appendChild(lantern);
 <header>
 <h1>🌙 Ramadan Kareem</h1>
 <div class="subtitle">London 2026</div>
-<div id="hijri">Loading Hijri Date...</div>
+<div id="date">Loading Date...</div>
 </header>
 
 <div class="container">
@@ -88,17 +89,17 @@ document.body.appendChild(lantern);
 <div class="card">
 <h2>Prayer Times</h2>
 <div class="prayer-grid">
-<div class="prayer">Fajr<br><strong id="fajr"></strong></div>
-<div class="prayer">Dhuhr<br><strong id="dhuhr"></strong></div>
-<div class="prayer">Asr<br><strong id="asr"></strong></div>
-<div class="prayer">Maghrib (Iftar)<br><strong id="maghrib"></strong></div>
-<div class="prayer">Isha<br><strong id="isha"></strong></div>
+<div class="prayer" id="fajrDiv">Fajr<br><strong id="fajr"></strong></div>
+<div class="prayer" id="dhuhrDiv">Dhuhr<br><strong id="dhuhr"></strong></div>
+<div class="prayer" id="asrDiv">Asr<br><strong id="asr"></strong></div>
+<div class="prayer" id="maghribDiv">Maghrib (Iftar)<br><strong id="maghrib"></strong></div>
+<div class="prayer" id="ishaDiv">Isha<br><strong id="isha"></strong></div>
 </div>
 </div>
 
 <!-- Countdown -->
 <div class="card">
-<h2>⏳ Countdown to Iftar</h2>
+<h2>⏳ Countdown to Next Prayer</h2>
 <div class="countdown" id="countdown"></div>
 </div>
 
@@ -155,11 +156,17 @@ Ramadan Kareem London 2026 | Developed by Mubarak Jimoh
 </footer>
 
 <script>
-// Hijri Date (example)
-let hijri = new Date();
-document.getElementById("hijri").innerText = "Hijri Date: 8 Sha'ban 1447 AH";
+// --- Dynamic Hijri + Gregorian Date ---
+function updateDate(){
+  const now = new Date();
+  const hijriMonths = ["Muharram","Safar","Rabi’ al-awwal","Rabi’ al-thani","Jumada al-ula","Jumada al-akhirah","Rajab","Sha’ban","Ramadan","Shawwal","Dhul-Qi’dah","Dhul-Hijjah"];
+  const islamicDate = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+  document.getElementById("date").innerText = `Hijri: ${islamicDate} | Gregorian: ${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
+}
+updateDate();
+setInterval(updateDate, 60000); // update every minute
 
-// Mosque Prayer Times Data
+// --- Mosque Prayer Times ---
 const mosqueTimes = {
 "lewisham":{"Fajr":"05:29","Dhuhr":"12:20","Asr":"14:50","Maghrib":"17:24","Isha":"18:53"},
 "eastlondon":{"Fajr":"05:35","Dhuhr":"12:20","Asr":"14:50","Maghrib":"17:25","Isha":"19:30"},
@@ -180,7 +187,6 @@ const mosqueTimes = {
 "tawhid":{"Fajr":"05:42","Dhuhr":"12:32","Asr":"15:02","Maghrib":"17:37","Isha":"19:06"}
 };
 
-// Update times
 function updateTimes(){
   let mosque=document.getElementById("mosqueSelect").value;
   document.getElementById("fajr").innerText = mosqueTimes[mosque].Fajr;
@@ -188,36 +194,54 @@ function updateTimes(){
   document.getElementById("asr").innerText = mosqueTimes[mosque].Asr;
   document.getElementById("maghrib").innerText = mosqueTimes[mosque].Maghrib;
   document.getElementById("isha").innerText = mosqueTimes[mosque].Isha;
-  startCountdown(mosqueTimes[mosque].Maghrib);
+  highlightNextPrayer(mosque);
   buildCalendar(mosque);
 }
 
-// Countdown function
+function parseTime(str){
+  let [h,m]=str.split(":").map(Number);
+  let now=new Date();
+  let d=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);
+  return d;
+}
+
+// Countdown + Next Prayer Highlight
 let countdownInterval;
-function startCountdown(time){
-  if(countdownInterval) clearInterval(countdownInterval);
-  function update(){
-    let now=new Date();
-    let [h,m]=time.split(":");
-    let maghrib=new Date();
-    maghrib.setHours(h,m,0);
-    if(now>maghrib){maghrib.setDate(maghrib.getDate()+1);}
-    let diff=maghrib-now;
-    let hours=Math.floor(diff/1000/60/60);
+function highlightNextPrayer(mosque){
+  clearInterval(countdownInterval);
+  function updateCountdown(){
+    const now = new Date();
+    const prayers = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+    let nextPrayer=null;
+    for(let p of prayers){
+      if(parseTime(mosqueTimes[mosque][p])>now){
+        nextPrayer=p; break;
+      }
+    }
+    if(!nextPrayer) nextPrayer="Fajr"; // next day
+    // Remove previous highlights
+    prayers.forEach(p=>document.getElementById(p.toLowerCase()+"Div").classList.remove("next"));
+    document.getElementById(nextPrayer.toLowerCase()+"Div").classList.add("next");
+    // Countdown
+    let nextTime=parseTime(mosqueTimes[mosque][nextPrayer]);
+    if(nextPrayer=="Fajr" && now>nextTime) nextTime.setDate(nextTime.getDate()+1);
+    let diff=nextTime-now;
+    let hrs=Math.floor(diff/1000/60/60);
     let mins=Math.floor((diff/1000/60)%60);
     let secs=Math.floor((diff/1000)%60);
-    document.getElementById("countdown").innerText=`${hours}h ${mins}m ${secs}s`;
+    document.getElementById("countdown").innerText=`${nextPrayer} in ${hrs}h ${mins}m ${secs}s`;
   }
-  update();
-  countdownInterval=setInterval(update,1000);
+  updateCountdown();
+  countdownInterval=setInterval(updateCountdown,1000);
 }
 
 // Tasbeeh Counter
 let count=0;
-function increment(){count++;document.getElementById("counter").innerText=count;}
-function reset(){count=0;document.getElementById("counter").innerText=count;}
+function increment(){count++;document.getElementById("counter").innerText=count;localStorage.setItem("tasbeeh",count);}
+function reset(){count=0;document.getElementById("counter").innerText=count;localStorage.setItem("tasbeeh",count);}
+if(localStorage.getItem("tasbeeh")){count=parseInt(localStorage.getItem("tasbeeh"));document.getElementById("counter").innerText=count;}
 
-// Build full Ramadan calendar
+// Build Ramadan Calendar
 function buildCalendar(mosque){
   const calendar=document.getElementById("calendar");
   calendar.innerHTML='<tr><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>';
@@ -230,7 +254,7 @@ function buildCalendar(mosque){
   }
 }
 
-// Reveal cards
+// Reveal cards on load
 document.querySelectorAll(".card").forEach((el,i)=>{setTimeout(()=>{el.classList.add("visible");},i*300);});
 
 // Initialize
@@ -239,4 +263,3 @@ updateTimes();
 
 </body>
 </html>
-
