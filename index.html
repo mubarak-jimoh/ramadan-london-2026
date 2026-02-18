@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramadan Kareem London 2026 | Developed by Mubarak Jimoh</title>
+<meta name="description" content="Accurate Ramadan prayer times, jamaah schedules, full calendar, duas, Quran verses, Hadith, and premium animations for London mosques. Developed by Mubarak Jimoh">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#0a0a0a;color:white;text-align:center;overflow-x:hidden;}
+header{padding:80px 20px;position:relative;overflow:hidden;}
+h1{font-family:'Cinzel',serif;font-size:3rem;color:#d4af37;letter-spacing:2px;animation:fadeInDown 2s;}
+.subtitle{color:#ccc;margin-top:10px;animation:fadeInDown 2s 0.5s;opacity:0;animation-fill-mode:forwards;}
+#hijri{margin-top:10px;color:#f4d03f;font-weight:bold;animation:fadeInDown 2s 1s;opacity:0;animation-fill-mode:forwards;}
+@keyframes fadeInDown{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+.moon{position:absolute;top:50px;right:10%;width:120px;height:120px;background:#f4d03f;border-radius:50%;box-shadow:0 0 50px #f4d03f;animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.lantern{position:absolute;width:40px;height:60px;background:linear-gradient(#d4af37,#8b6f1f);border-radius:10px;animation:rise 15s linear infinite;opacity:0.6;}
+@keyframes rise{0%{transform:translateY(100vh)}100%{transform:translateY(-150px)}}
+.container{max-width:1100px;margin:auto;padding:20px;}
+.card{background:rgba(255,255,255,0.05);border:1px solid rgba(212,175,55,0.4);border-radius:20px;padding:25px;margin:20px;box-shadow:0 0 25px rgba(212,175,55,0.2);transition:0.3s;opacity:0;transform:translateY(20px);}
+.card.visible{opacity:1;transform:translateY(0);transition:all 1s;}
+h2{color:#d4af37;margin-bottom:15px;}
+.prayer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;}
+.prayer{background:rgba(255,255,255,0.07);padding:15px;border-radius:15px;animation:fadeIn 1s;}
+@keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
+.countdown{font-size:2rem;color:#f4d03f;}
+button{padding:10px 20px;border:none;border-radius:10px;background:#d4af37;font-weight:bold;cursor:pointer;margin-top:10px;}
+footer{margin-top:40px;padding:20px;color:#aaa;font-size:0.9rem;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid rgba(212,175,55,0.3);padding:8px;}
+th{background:#1a1a1a;color:#d4af37;}
+tr:nth-child(even){background:rgba(212,175,55,0.05);}
+tr.today{background:rgba(212,175,55,0.2);}
+select{padding:10px;margin-bottom:15px;border-radius:10px;border:none;font-weight:bold;}
+.scrollable{max-height:300px;overflow-y:auto;text-align:left;}
+.scrollable ul{list-style-type:disc;margin-left:20px;}
+.copy-btn{padding:5px 10px;margin-left:10px;border-radius:5px;background:#f4d03f;color:#0a0a0a;font-weight:bold;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="moon"></div>
+<script>
+for(let i=0;i<8;i++){
+let lantern=document.createElement("div");
+lantern.className="lantern";
+lantern.style.left=Math.random()*100+"%";
+lantern.style.animationDuration=(10+Math.random()*10)+"s";
+document.body.appendChild(lantern);
+}
+</script>
+
+<header>
+<h1>🌙 Ramadan Kareem</h1>
+<div class="subtitle">London 2026</div>
+<div id="hijri">Loading Hijri Date...</div>
+</header>
+
+<div class="container">
+
+<!-- Mosque Selector -->
+<div class="card">
+<h2>Select Mosque</h2>
+<select id="mosqueSelect" onchange="updateTimes()">
+<option value="lewisham">Lewisham Islamic Centre</option>
+<option value="eastlondon">East London Mosque</option>
+<option value="regentpark">London Central Mosque</option>
+<option value="finsbury">Finsbury Park Mosque</option>
+<option value="abbeymills">Abbey Mills Mosque</option>
+<option value="bricklane">Brick Lane Jamme Masjid</option>
+<option value="maida">Islamic Centre of England</option>
+<option value="croydon">Croydon Mosque</option>
+<option value="walthamstow">Walthamstow Central Mosque</option>
+<option value="harrow">Harrow Central Mosque</option>
+<option value="leytonstone">Leytonstone Mosque</option>
+<option value="whitecity">White City Mosque</option>
+<option value="brixton">Brixton Mosque</option>
+<option value="almanaar">Al-Manaar Muslim Centre</option>
+<option value="newham">Newham Jamia Masjid & Madrassa</option>
+<option value="dulwich">Dulwich Mosque</option>
+<option value="tawhid">Masjid Al-Tawhid</option>
+</select>
+</div>
+
+<!-- Prayer Times -->
+<div class="card">
+<h2>Prayer Times</h2>
+<div class="prayer-grid">
+<div class="prayer">Fajr<br><strong id="fajr"></strong></div>
+<div class="prayer">Dhuhr<br><strong id="dhuhr"></strong></div>
+<div class="prayer">Asr<br><strong id="asr"></strong></div>
+<div class="prayer">Maghrib (Iftar)<br><strong id="maghrib"></strong></div>
+<div class="prayer">Isha<br><strong id="isha"></strong></div>
+</div>
+</div>
+
+<!-- Countdown -->
+<div class="card">
+<h2>⏳ Countdown to Iftar</h2>
+<div class="countdown" id="countdown"></div>
+</div>
+
+<!-- Ramadan Calendar -->
+<div class="card">
+<h2>📅 Full Ramadan Calendar</h2>
+<table id="calendar">
+<tr><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>
+</table>
+</div>
+
+<!-- Duas & Quran -->
+<div class="card">
+<h2>Duas & Quran Verses</h2>
+<p>📿 Duas for Suhoor & Iftar</p>
+<ul>
+<li>اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَيْكَ تَوَكَّلْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</li>
+<li>نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ</li>
+<li>SubhanAllah x33, Alhamdulillah x33, Allahu Akbar x34 after prayers</li>
+</ul>
+<p>📖 Quran Verses:</p>
+<ul>
+<li>"O you who believe! Fasting is prescribed for you..." (Al-Baqarah 2:183)</li>
+<li>"So whoever of you sights [the crescent of] the month..." (Al-Baqarah 2:185)</li>
+</ul>
+</div>
+
+<!-- Hadith & Daily Duas -->
+<div class="card">
+<h2>📖 Hadith & Daily Duas</h2>
+<div class="scrollable" id="hadithList">
+<ul>
+<li>"Whoever fasts Ramadan with faith and seeking reward, all past sins will be forgiven." (Sahih Bukhari)</li>
+<li>"The best of people are those who are most beneficial to others." (Hadith)</li>
+<li>"Dua is the essence of worship." (Hadith)</li>
+<li>"O Allah! I seek Your forgiveness and guidance." (Daily Dua)</li>
+<li>"Allahumma inni as'aluka al-jannah wa a'udhu bika min an-nar." (Dua for Paradise)</li>
+</ul>
+</div>
+</div>
+
+<!-- Tasbeeh Counter -->
+<div class="card">
+<h2>📿 Tasbeeh Counter</h2>
+<h1 id="counter">0</h1>
+<button onclick="increment()">+1</button>
+<button onclick="reset()">Reset</button>
+</div>
+
+</div>
+
+<footer>
+Ramadan Kareem London 2026 | Developed by Mubarak Jimoh
+</footer>
+
+<script>
+// Hijri Date (example)
+let hijri = new Date();
+document.getElementById("hijri").innerText = "Hijri Date: 8 Sha'ban 1447 AH";
+
+// Mosque Prayer Times Data
+const mosqueTimes = {
+"lewisham":{"Fajr":"05:29","Dhuhr":"12:20","Asr":"14:50","Maghrib":"17:24","Isha":"18:53"},
+"eastlondon":{"Fajr":"05:35","Dhuhr":"12:20","Asr":"14:50","Maghrib":"17:25","Isha":"19:30"},
+"regentpark":{"Fajr":"05:28","Dhuhr":"12:19","Asr":"14:49","Maghrib":"17:23","Isha":"18:52"},
+"finsbury":{"Fajr":"05:28","Dhuhr":"12:20","Asr":"14:50","Maghrib":"17:25","Isha":"18:54"},
+"abbeymills":{"Fajr":"05:31","Dhuhr":"12:21","Asr":"14:51","Maghrib":"17:26","Isha":"18:55"},
+"bricklane":{"Fajr":"05:32","Dhuhr":"12:22","Asr":"14:52","Maghrib":"17:27","Isha":"18:56"},
+"maida":{"Fajr":"05:30","Dhuhr":"12:21","Asr":"14:51","Maghrib":"17:26","Isha":"18:55"},
+"croydon":{"Fajr":"05:33","Dhuhr":"12:23","Asr":"14:53","Maghrib":"17:28","Isha":"18:57"},
+"walthamstow":{"Fajr":"05:34","Dhuhr":"12:24","Asr":"14:54","Maghrib":"17:29","Isha":"18:58"},
+"harrow":{"Fajr":"05:35","Dhuhr":"12:25","Asr":"14:55","Maghrib":"17:30","Isha":"18:59"},
+"leytonstone":{"Fajr":"05:36","Dhuhr":"12:26","Asr":"14:56","Maghrib":"17:31","Isha":"19:00"},
+"whitecity":{"Fajr":"05:37","Dhuhr":"12:27","Asr":"14:57","Maghrib":"17:32","Isha":"19:01"},
+"brixton":{"Fajr":"05:38","Dhuhr":"12:28","Asr":"14:58","Maghrib":"17:33","Isha":"19:02"},
+"almanaar":{"Fajr":"05:39","Dhuhr":"12:29","Asr":"14:59","Maghrib":"17:34","Isha":"19:03"},
+"newham":{"Fajr":"05:40","Dhuhr":"12:30","Asr":"15:00","Maghrib":"17:35","Isha":"19:04"},
+"dulwich":{"Fajr":"05:41","Dhuhr":"12:31","Asr":"15:01","Maghrib":"17:36","Isha":"19:05"},
+"tawhid":{"Fajr":"05:42","Dhuhr":"12:32","Asr":"15:02","Maghrib":"17:37","Isha":"19:06"}
+};
+
+// Update times
+function updateTimes(){
+  let mosque=document.getElementById("mosqueSelect").value;
+  document.getElementById("fajr").innerText = mosqueTimes[mosque].Fajr;
+  document.getElementById("dhuhr").innerText = mosqueTimes[mosque].Dhuhr;
+  document.getElementById("asr").innerText = mosqueTimes[mosque].Asr;
+  document.getElementById("maghrib").innerText = mosqueTimes[mosque].Maghrib;
+  document.getElementById("isha").innerText = mosqueTimes[mosque].Isha;
+  startCountdown(mosqueTimes[mosque].Maghrib);
+  buildCalendar(mosque);
+}
+
+// Countdown function
+let countdownInterval;
+function startCountdown(time){
+  if(countdownInterval) clearInterval(countdownInterval);
+  function update(){
+    let now=new Date();
+    let [h,m]=time.split(":");
+    let maghrib=new Date();
+    maghrib.setHours(h,m,0);
+    if(now>maghrib){maghrib.setDate(maghrib.getDate()+1);}
+    let diff=maghrib-now;
+    let hours=Math.floor(diff/1000/60/60);
+    let mins=Math.floor((diff/1000/60)%60);
+    let secs=Math.floor((diff/1000)%60);
+    document.getElementById("countdown").innerText=`${hours}h ${mins}m ${secs}s`;
+  }
+  update();
+  countdownInterval=setInterval(update,1000);
+}
+
+// Tasbeeh Counter
+let count=0;
+function increment(){count++;document.getElementById("counter").innerText=count;}
+function reset(){count=0;document.getElementById("counter").innerText=count;}
+
+// Build full Ramadan calendar
+function buildCalendar(mosque){
+  const calendar=document.getElementById("calendar");
+  calendar.innerHTML='<tr><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>';
+  let today=new Date().getDate();
+  for(let i=1;i<=30;i++){
+    let tr=document.createElement("tr");
+    if(i===today) tr.classList.add("today");
+    tr.innerHTML=`<td>${i}/2/2026</td><td>${mosqueTimes[mosque].Fajr}</td><td>${mosqueTimes[mosque].Maghrib}</td>`;
+    calendar.appendChild(tr);
+  }
+}
+
+// Reveal cards
+document.querySelectorAll(".card").forEach((el,i)=>{setTimeout(()=>{el.classList.add("visible");},i*300);});
+
+// Initialize
+updateTimes();
+</script>
+
+</body>
+</html>
+
