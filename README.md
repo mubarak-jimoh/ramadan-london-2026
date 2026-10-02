@@ -33,7 +33,7 @@ If it helps even one person stay consistent or feel more connected during Ramada
 Clone the repo and open `index.html` in a browser:
 
 ```bash
-git clone https://github.com/Mubarakjk/ramadan-london-2026.git
+git clone https://github.com/mubarak-jimoh/ramadan-london-2026.git
 ```
 
 ## What I'd improve
