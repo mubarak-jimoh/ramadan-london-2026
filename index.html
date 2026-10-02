@@ -107,7 +107,7 @@ document.body.appendChild(lantern);
 <div class="card">
 <h2>📅 Full Ramadan Calendar</h2>
 <table id="calendar">
-<tr><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>
+<tr><th>Day</th><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>
 </table>
 </div>
 
@@ -242,14 +242,21 @@ function reset(){count=0;document.getElementById("counter").innerText=count;loca
 if(localStorage.getItem("tasbeeh")){count=parseInt(localStorage.getItem("tasbeeh"));document.getElementById("counter").innerText=count;}
 
 // Build Ramadan Calendar
+// Ramadan 2026 began on 18 February. The start can differ by a day
+// depending on the moon sighting your mosque follows.
+const RAMADAN_START = new Date(2026, 1, 18);
+const RAMADAN_DAYS = 30;
+
 function buildCalendar(mosque){
   const calendar=document.getElementById("calendar");
-  calendar.innerHTML='<tr><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>';
-  let today=new Date().getDate();
-  for(let i=1;i<=30;i++){
+  calendar.innerHTML='<tr><th>Day</th><th>Date</th><th>Fajr</th><th>Maghrib</th></tr>';
+  const today=new Date().toDateString();
+  for(let i=0;i<RAMADAN_DAYS;i++){
+    // Adding days to a Date rolls over into March correctly
+    const day=new Date(RAMADAN_START.getFullYear(),RAMADAN_START.getMonth(),RAMADAN_START.getDate()+i);
     let tr=document.createElement("tr");
-    if(i===today) tr.classList.add("today");
-    tr.innerHTML=`<td>${i}/2/2026</td><td>${mosqueTimes[mosque].Fajr}</td><td>${mosqueTimes[mosque].Maghrib}</td>`;
+    if(day.toDateString()===today) tr.classList.add("today");
+    tr.innerHTML=`<td>${i+1}</td><td>${day.getDate()}/${day.getMonth()+1}/${day.getFullYear()}</td><td>${mosqueTimes[mosque].Fajr}</td><td>${mosqueTimes[mosque].Maghrib}</td>`;
     calendar.appendChild(tr);
   }
 }
